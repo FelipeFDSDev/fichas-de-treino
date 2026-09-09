@@ -1,0 +1,37 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Build
+dist/
+coverage/
+.reports/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Environment
+.env
+.env.local
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# Testing
+.nyc_output/
+
+# Coverage
+coverage/
+
+# Build artifacts
+*.min.js
+*.min.css

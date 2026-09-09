@@ -1,0 +1,90 @@
+name: Quality Gates
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # Daily at midnight
+  workflow_dispatch:
+
+jobs:
+  static-analysis:
+    name: Static Analysis
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Run ESLint
+      run: npm run lint
+    
+    - name: SonarCloud Scan
+      uses: SonarSource/sonarcloud-github-action@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      with:
+        args: |
+          -Dsonar.projectKey=seu-usuario_treino-fichas
+          -Dsonar.organization=seu-usuario
+          -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
+  
+  accessibility:
+    name: Accessibility Check
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Run axe accessibility tests
+      run: npx @axe-core/cli src/index.html --save ./axe-output.json
+    
+    - name: Upload accessibility report
+      uses: actions/upload-artifact@v3
+      with:
+        name: accessibility-report
+        path: axe-output.json
+
+  broken-links:
+    name: Check Broken Links
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Start server
+      run: npx live-server src --port=8080 --no-browser &
+    
+    - name: Wait for server
+      run: sleep 5
+    
+    - name: Check broken links
+      uses: schneegans/dynamic-badges-action@v1
+      with:
+        auth: ${{ secrets.GIST_SECRET }}
+        gistID: ${{ secrets.GIST_ID }}
+        filename: broken-links.json
+        label: Broken Links
+        message: Checking...
+        color: blue
+    
+    - name: Run link checker
+      run: |
+        npx broken-link-checker http://localhost:8080 -r --exclude "*.pdf,*.jpg,*.png" || true
