@@ -22,6 +22,8 @@ npm run build
 
 O workflow [ci.yml](.github/workflows/ci.yml) é executado em pushes para `main`/`develop`, pull requests e manualmente pelo botão **Run workflow**. Ele instala as dependências, executa lint, formatação, testes, build e publica `src/` e `dist/` como artefato para download.
 
+Documentação detalhada: [docs/PIPELINE.md](docs/PIPELINE.md).
+
 ### Actions do GitHub Marketplace utilizadas
 
 1. **[actions/checkout](https://github.com/marketplace/actions/checkout)** (`actions/checkout@v4`): baixa o código do repositório no runner Ubuntu. É a primeira etapa, pois todas as verificações dependem dos arquivos do projeto.
