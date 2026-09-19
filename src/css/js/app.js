@@ -19,9 +19,9 @@ export function init() {
 
   // Initialize renderer
   renderer = new Renderer(grid, emptyState, totalBadge);
-  
+
   // Subscribe to changes
-  fichaManager.subscribe((fichas) => {
+  fichaManager.subscribe(fichas => {
     renderer.render(fichas);
   });
 
@@ -42,7 +42,7 @@ export function init() {
   });
 
   // Event: Remove
-  document.addEventListener('removeFicha', (e) => {
+  document.addEventListener('removeFicha', e => {
     fichaManager.removeFicha(e.detail.id);
   });
 
@@ -66,7 +66,7 @@ export function init() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `fichas_treino_${new Date().toISOString().slice(0,10)}.json`;
+    a.download = `fichas_treino_${new Date().toISOString().slice(0, 10)}.json`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -78,11 +78,11 @@ export function init() {
     const input = document.createElement('input');
     input.type = 'file';
     input.accept = '.json';
-    input.onchange = (e) => {
+    input.onchange = e => {
       const file = e.target.files[0];
       if (!file) return;
       const reader = new FileReader();
-      reader.onload = (ev) => {
+      reader.onload = ev => {
         try {
           const data = JSON.parse(ev.target.result);
           fichaManager.importFichas(data);
@@ -98,11 +98,11 @@ export function init() {
 
   // Keyboard shortcuts
   const shortcuts = {
-    'Enter': () => gerarBtn.click(),
-    'Escape': () => limparBtn.click()
+    Enter: () => gerarBtn.click(),
+    Escape: () => limparBtn.click(),
   };
 
-  document.addEventListener('keydown', (e) => {
+  document.addEventListener('keydown', e => {
     if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') {
       if (e.key === 'Enter') {
         gerarBtn.click();
@@ -119,7 +119,7 @@ export function init() {
   // Set version
   const versionEl = document.getElementById('version');
   if (versionEl) {
-    versionEl.textContent = `v${process.env.npm_package_version || '1.0.0'}`;
+    versionEl.textContent = 'v1.0.0';
   }
 
   console.log('🏋️ Treino Fichas App inicializado!');

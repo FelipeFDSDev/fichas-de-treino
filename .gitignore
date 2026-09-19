@@ -1,6 +1,5 @@
 # Dependencies
 node_modules/
-package-lock.json
 
 # Build
 dist/
@@ -34,4 +33,3 @@ coverage/
 
 # Build artifacts
 *.min.js
-*.min.css

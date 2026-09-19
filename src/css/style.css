@@ -29,7 +29,11 @@
 
 body {
   background: linear-gradient(135deg, #f4f7fc 0%, #e8edf5 100%);
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family:
+    'Inter',
+    system-ui,
+    -apple-system,
+    sans-serif;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -373,32 +377,32 @@ body {
   .app-wrapper {
     padding: 1rem;
   }
-  
+
   .header-content h1 {
     font-size: 1.6rem;
   }
-  
+
   .controls {
     flex-direction: column;
     align-items: stretch;
     padding: 1.2rem;
   }
-  
+
   .btn-primary {
     width: 100%;
     justify-content: center;
   }
-  
+
   .action-bar {
     flex-direction: column;
     align-items: stretch;
   }
-  
+
   .action-bar .left {
     justify-content: center;
     flex-wrap: wrap;
   }
-  
+
   .cards-grid {
     grid-template-columns: 1fr;
   }
@@ -420,12 +424,12 @@ body {
   .btn-remover {
     display: none !important;
   }
-  
+
   .app-wrapper {
     box-shadow: none !important;
     background: white !important;
   }
-  
+
   .treino-card {
     break-inside: avoid;
     box-shadow: none !important;

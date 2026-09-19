@@ -2,13 +2,13 @@ export const generateId = () => {
   return Date.now().toString(36) + Math.random().toString(36).substring(2, 6);
 };
 
-export const formatDate = (date) => {
+export const formatDate = date => {
   return new Date(date).toLocaleDateString('pt-BR', {
     day: '2-digit',
     month: '2-digit',
     year: 'numeric',
     hour: '2-digit',
-    minute: '2-digit'
+    minute: '2-digit',
   });
 };
 
@@ -24,6 +24,6 @@ export const debounce = (func, wait) => {
   };
 };
 
-export const isValidExerciseCount = (count) => {
+export const isValidExerciseCount = count => {
   return Number.isInteger(count) && count >= 3 && count <= 8;
 };

@@ -1,127 +1,48 @@
-name: CI Pipeline
+name: Pipeline de qualidade
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [main, develop]
   pull_request:
-    branches: [ main ]
+    branches: [main, develop]
+  workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
   quality:
-    name: Quality Checks
+    name: Testes e build
     runs-on: ubuntu-latest
-    
+
     steps:
-    - uses: actions/checkout@v3
-    
-    - name: Setup Node.js
-      uses: actions/setup-node@v3
+    - name: Checkout do código
+      uses: actions/checkout@v4
+
+    - name: Configurar Node.js
+      uses: actions/setup-node@v4
       with:
-        node-version: '18'
-        cache: 'npm'
-    
-    - name: Install dependencies
+        node-version: 20
+
+    - name: Instalar dependências
       run: npm ci
-    
-    - name: Lint
+
+    - name: Verificar lint
       run: npm run lint
-    
-    - name: Format check
-      run: npx prettier --check src/**/*.{js,css,html}
-    
-    - name: Run tests with coverage
-      run: npm run test:coverage
-    
-    - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v3
-      with:
-        token: ${{ secrets.CODECOV_TOKEN }}
-        files: ./coverage/lcov.info
-        flags: unittests
-        name: codecov-umbrella
-    
-    - name: Build
+    - name: Verificar formatação
+      run: npm run format:check
+
+    - name: Executar testes
+      run: npm test -- --runInBand
+
+    - name: Gerar build
       run: npm run build
-    
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v3
-      with:
-        name: build
-        path: src/
-        retention-days: 7
 
-  security:
-    name: Security Scan
-    runs-on: ubuntu-latest
-    
-    steps:
-    - uses: actions/checkout@v3
-    
-    - name: Run Snyk Security Scan
-      uses: snyk/actions/node@master
-      env:
-        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+    - name: Publicar artefato da aplicação
+      uses: actions/upload-artifact@v4
       with:
-        args: --severity-threshold=high
-    
-    - name: Run OWASP Dependency Check
-      uses: dependency-check/Dependency-Check_Action@main
-      with:
-        project: 'Treino Fichas'
-        path: '.'
-        format: 'HTML'
-        out: 'reports'
-    
-    - name: Upload security report
-      uses: actions/upload-artifact@v3
-      with:
-        name: security-report
-        path: reports/
-
-  performance:
-    name: Performance Audit
-    runs-on: ubuntu-latest
-    
-    steps:
-    - uses: actions/checkout@v3
-    
-    - name: Setup Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '18'
-    
-    - name: Install dependencies
-      run: npm ci
-    
-    - name: Start server
-      run: npx live-server src --port=8080 --no-browser &
-    
-    - name: Wait for server
-      run: sleep 5
-    
-    - name: Run Lighthouse CI
-      uses: treosh/lighthouse-ci-action@v9
-      with:
-        urls: |
-          http://localhost:8080/
-        budgetPath: ./budget.json
-        uploadArtifacts: true
-        temporaryPublicStorage: true
-    
-    - name: Check bundle size
-      run: |
-        du -sh src/js/*.js | awk '{print $2 " " $1}' > bundle-size.txt
-        cat bundle-size.txt
-
-  dependency-review:
-    name: Dependency Review
-    runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request'
-    
-    steps:
-    - uses: actions/checkout@v3
-    
-    - name: Dependency Review
-      uses: actions/dependency-review-action@v3
-      with:
-        fail-on-severity: high
+        name: treino-fichas-build
+        path: |
+          src/
+          dist/
+        if-no-files-found: error

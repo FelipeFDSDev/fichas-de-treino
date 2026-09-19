@@ -19,7 +19,7 @@ export class Renderer {
     this.empty.classList.add('hidden');
     this.badge.textContent = `📋 ${fichas.length} ficha${fichas.length > 1 ? 's' : ''}`;
 
-    fichas.forEach((ficha, index) => {
+    fichas.forEach(ficha => {
       const card = this.createCard(ficha);
       this.grid.appendChild(card);
     });
@@ -61,10 +61,10 @@ export class Renderer {
     btnRemover.className = 'btn-remover';
     btnRemover.textContent = '✕ Remover';
     btnRemover.setAttribute('aria-label', `Remover ficha ${ficha.nome}`);
-    btnRemover.addEventListener('click', (e) => {
+    btnRemover.addEventListener('click', e => {
       e.stopPropagation();
       const removeEvent = new CustomEvent('removeFicha', {
-        detail: { id: ficha.id }
+        detail: { id: ficha.id },
       });
       document.dispatchEvent(removeEvent);
     });

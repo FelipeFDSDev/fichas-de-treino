@@ -1,4 +1,3 @@
-
 import { generateId } from './utils.js';
 
 class FichaManager {
@@ -15,9 +14,9 @@ class FichaManager {
       nivel: nivel || 'Intermediário',
       exercicios: exercicios.map(ex => ({
         nome: ex.nome,
-        detalhe: ex.detalhe || '3x10'
+        detalhe: ex.detalhe || '3x10',
       })),
-      createdAt: new Date().toISOString()
+      createdAt: new Date().toISOString(),
     };
     this.fichas.push(ficha);
     this.saveToStorage();
@@ -51,7 +50,7 @@ class FichaManager {
     }
     this.fichas = data.map(f => ({
       ...f,
-      id: f.id || generateId()
+      id: f.id || generateId(),
     }));
     this.saveToStorage();
     this.notifyListeners();

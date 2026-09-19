@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ficha de Treino - Gerador</title>
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+
+  <body>
+    <div class="app-wrapper" id="app">
+      <header class="app-header">
+        <div class="header-content">
+          <h1>Ficha de Treino <span class="badge">Gerador</span></h1>
+          <p class="subhead">Monte treinos personalizados com poucos cliques</p>
+        </div>
+      </header>
+
+      <section class="controls" aria-label="Controles de geração">
+        <div class="control-group">
+          <label for="nomeTreino">Nome do treino</label>
+          <input type="text" id="nomeTreino" placeholder="Ex: Upper Body" value="Push Day" />
+        </div>
+        <div class="control-group">
+          <label for="nivelSelect">Nível</label>
+          <select id="nivelSelect">
+            <option value="Iniciante">Iniciante</option>
+            <option value="Intermediário" selected>Intermediário</option>
+            <option value="Avançado">Avançado</option>
+          </select>
+        </div>
+        <div class="control-group" style="flex: 0 0 120px">
+          <label for="numExercicios">Exercícios</label>
+          <input type="number" id="numExercicios" min="3" max="8" value="5" />
+        </div>
+        <button class="btn-primary" id="gerarBtn">Gerar ficha</button>
+      </section>
+
+      <div class="action-bar">
+        <div class="left">
+          <span class="badge-total" id="totalBadge">0 fichas</span>
+          <button class="btn-secondary" id="limparBtn">Limpar tudo</button>
+        </div>
+        <div>
+          <button class="btn-secondary" id="exportarBtn">Exportar (JSON)</button>
+          <button class="btn-secondary" id="importarBtn">Importar</button>
+        </div>
+      </div>
+
+      <div class="cards-grid" id="cardsGrid">
+        <div class="empty-state" id="emptyState">
+          <p>Nenhuma ficha de treino ainda</p>
+          <small>Use o formulário acima para gerar sua primeira ficha</small>
+        </div>
+      </div>
+
+      <footer class="app-footer">
+        <p>Desenvolvido com <span id="version">v1.0.0</span></p>
+      </footer>
+    </div>
+
+    <script type="module">
+      import { init } from './css/js/app.js';
+      document.addEventListener('DOMContentLoaded', init);
+    </script>
+  </body>
+</html>
